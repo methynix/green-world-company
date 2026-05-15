@@ -1,136 +1,110 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { HiOutlineLightningBolt, HiOutlineBriefcase, HiArrowRight } from "react-icons/hi";
-import { GiWaterDrop, GiDrill } from "react-icons/gi";
+import { HiArrowRight, HiLightningBolt,  HiBriefcase } from "react-icons/hi";
+import {FaTint} from "react-icons/fa"
+import { GiSolarPower, GiWaterTank, GiDrill } from "react-icons/gi";
 import { cn } from "../utils/cn";
+import {serviceCategories} from '../services/data'
 
-// 1. DATA ARRAY: Strictly mapped to your new terminology & service IDs
-const services = [
-  {
-    id: "energy",
-    title: "Renewable Energy",
-    desc: "Utility-scale Solar C&I solutions, Wind, and Hybrid ESS infrastructure designed for regional grid resilience.",
-    img: "https://res.cloudinary.com/dwt1u991q/image/upload/v1776160057/renewableEnergy_hzw4gx.jpg",
-    icon: HiOutlineLightningBolt,
-    accent: "bg-gw-leaf",
-    glow: "shadow-gw-leaf/20"
-  },
-  {
-    id: "water",
-    title: "Water Solutions",
-    desc: "Professional borehole engineering, Reverse Osmosis, and advanced purification systems for industrial use.",
-    img: "https://res.cloudinary.com/dwt1u991q/image/upload/v1776160055/waterInfrastructure_b5df4r.jpg",
-    icon: GiWaterDrop,
-    accent: "bg-gw-sky",
-    glow: "shadow-gw-sky/20"
-  },
-  {
-    id: "epc",
-    title: "EPC Services",
-    desc: "Full-cycle Engineering, Procurement, and Construction. We manage the transition from blueprint to commissioned asset.",
-    img: "https://res.cloudinary.com/dwt1u991q/image/upload/v1776160056/construction_bcaayp.jpg",
-    icon: GiDrill,
-    accent: "bg-slate-700",
-    glow: "shadow-slate-700/20"
-  },
-  {
-    id: "tech-consultation",
-    title: "Tech Consultation",
-    desc: "Strategic advisory for Peaceful Nuclear energy, Geothermal exploration, and technical feasibility studies.",
-    img: "https://res.cloudinary.com/dwt1u991q/image/upload/v1776320158/consult_j5rusp.png",
-    icon: HiOutlineBriefcase,
-    accent: "bg-gw-forest",
-    glow: "shadow-gw-forest/20"
-  }
-];
 
-const ServicesSection = () => {
+const Services = () => {
   return (
-    <section id="solutions-hub" className="py-24 px-6 bg-gw-base overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <div className="pt-32 pb-20 bg-gw-base min-h-screen">
+      <div className="max-w-7xl mx-auto px-6">
         
-        {/* SECTION HEADER */}
-        <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-          <div className="max-w-2xl">
-            <motion.span 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="text-gw-leaf font-bold tracking-[0.3em] uppercase text-xs"
-            >
-              Our Core Expertise
-            </motion.span>
-            <h2 className="text-5xl md:text-6xl font-serif text-gw-forest mt-4 leading-tight">
-              Industrial <span className="italic text-gw-leaf font-light">Engineering</span> <br/> 
-              & Infrastructure.
-            </h2>
-          </div>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="text-slate-500 max-w-sm text-lg leading-relaxed border-l-2 border-gw-sun/30 pl-6"
+        {/* Header */}
+        <div className="mb-16 text-center max-w-3xl mx-auto">
+          <motion.span
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-gw-leaf font-mono text-xs tracking-[0.3em] uppercase"
           >
-            Providing end-to-end technical solutions for Africa's key energy and water sectors.
+            Our Services
+          </motion.span>
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-6xl font-serif text-gw-forest mt-4 leading-tight"
+          >
+            Solar <span className="italic text-gw-leaf">•</span> Water <span className="italic text-gw-leaf">•</span> Consultation
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-slate-500 mt-4 text-lg"
+          >
+            Commercial & Industrial solar energy solutions, plus water treatment systems — delivered with technical precision.
           </motion.p>
         </div>
 
-        {/* SERVICE GRID: 2x2 for clean balance */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-12">
-          {services.map((service, index) => (
-            <Link to={`/services/${service.id}`} key={index}>
-              <motion.div 
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -15 }}
-                className={cn(
-                  "group relative h-[500px] rounded-[3.5rem] overflow-hidden shadow-2xl cursor-pointer transition-all duration-500",
-                  service.glow
-                )}
-              >
-                {/* Background Image with Cinematic Overlay */}
-                <img 
-                  src={service.img} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 brightness-[0.7] group-hover:brightness-[0.4]" 
-                  alt={service.title}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gw-forest via-gw-forest/10 to-transparent" />
-                
-                {/* Content Overlay */}
-                <div className="absolute inset-0 p-10 md:p-14 flex flex-col justify-end">
-                  {/* Icon Box */}
-                  <div className={cn(
-                    "w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-8 shadow-xl transition-all duration-700 group-hover:rotate-[360deg]",
-                    service.accent
-                  )}>
-                    <service.icon size={30} />
-                  </div>
-
-                  {/* Text Details */}
-                  <h3 className="text-3xl font-bold text-white mb-4 tracking-tight group-hover:text-gw-sun transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-white/70 text-lg leading-relaxed mb-8 opacity-0 group-hover:opacity-100 translate-y-6 group-hover:translate-y-0 transition-all duration-500">
-                    {service.desc}
-                  </p>
-                  
-                  {/* Call to Action Trigger */}
-                  <div className="flex items-center gap-3 text-gw-sun font-bold uppercase tracking-[0.2em] text-xs opacity-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                    View Blueprint Details <HiArrowRight className="group-hover:translate-x-2 transition-transform" />
-                  </div>
+        {/* Service Categories */}
+        <div className="space-y-20">
+          {serviceCategories.map((category, catIdx) => (
+            <div key={catIdx}>
+              <div className="flex items-center gap-4 mb-8">
+                <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center", category.color)}>
+                  <category.icon size={24} className="text-white" />
                 </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-gw-forest">{category.title}</h2>
+                  <p className="text-slate-500 text-sm">{category.subtitle}</p>
+                </div>
+              </div>
 
-                {/* Corner Decorative Blur (The "Girl-Boss" Touch) */}
-                <div className={cn(
-                  "absolute -top-20 -right-20 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity",
-                  service.accent
-                )} />
-              </motion.div>
-            </Link>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {category.services.map((service, idx) => (
+                  <motion.div
+  key={idx}
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ delay: idx * 0.05 }}
+  whileHover={{ y: -5 }}
+  className="group relative overflow-hidden rounded-2xl shadow-lg transition-all min-h-[220px]"
+>
+  <div className="absolute inset-0 z-0">
+    <img 
+      src={service.image || "https://res.cloudinary.com/dwt1u991q/image/upload/v1776160057/renewableEnergy_hzw4gx.jpg"} 
+      className="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-all duration-500"
+      alt={service.name}
+    />
+  </div>
+  
+  {/* Glassmorphism overlay */}
+  <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] group-hover:bg-white/70 transition-all duration-500 z-0" />
+  
+  <div className="relative z-10 p-6">
+    <h3 className="text-xl font-bold text-gw-forest mb-3">{service.name}</h3>
+    <p className="text-slate-600 text-sm leading-relaxed mb-4">
+      {service.description}
+    </p>
+    <Link to={service.path}>
+      <button className="flex items-center gap-2 text-gw-leaf text-sm font-medium hover:gap-3 transition-all">
+        Learn More <HiArrowRight size={14} />
+      </button>
+    </Link>
+  </div>
+</motion.div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+
+        <div className="mt-20 bg-gw-forest rounded-3xl p-12 text-center text-white">
+          <h3 className="text-2xl font-serif mb-4">Need a customized solution?</h3>
+          <p className="text-white/60 mb-6 max-w-2xl mx-auto">
+            Speak directly with our engineering team about your specific solar or water requirements.
+          </p>
+          <Link to="/contact">
+            <button className="px-8 py-3 bg-gw-sun text-gw-forest rounded-full font-medium hover:bg-white transition-colors">
+              Speak to an Engineer
+            </button>
+          </Link>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default ServicesSection;
+export default Services;

@@ -1,3 +1,32 @@
+/* index.css - Add these tailwind utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --gw-leaf: 77, 173, 70;
+    --gw-sky: 56, 189, 248;
+    --gw-sun: 251, 191, 36;
+    --gw-forest: 20, 43, 33;
+    --gw-base: 248, 250, 242;
+  }
+}
+
+@layer utilities {
+  .rounded-4xl {
+    border-radius: 2rem;
+  }
+  
+  .bg-gw-leaf\/10 {
+    background-color: rgba(77, 173, 70, 0.1);
+  }
+  
+  .bg-gw-sun\/10 {
+    background-color: rgba(251, 191, 36, 0.1);
+  }
+  
+  .bg-gw-sky\/10 {
+    background-color: rgba(56, 189, 248, 0.1);
+  }
+}

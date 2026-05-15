@@ -5,7 +5,6 @@ import { HiMenuAlt3, HiX, HiChevronDown, HiChevronRight } from "react-icons/hi";
 import { cn } from "../utils/cn";
 import Button from "../atoms/Button";
 
-// 1. NESTED DATA STRUCTURE (DRY)
 const NAV_LINKS = [
   { name: "Home", path: "/" },
   {
@@ -49,11 +48,11 @@ const Navbar = () => {
 
   return (
     <nav
-      className={cn(
-        "fixed top-0 w-full z-[100] transition-all duration-500 px-6",
-        scrolled ? "py-3 bg-white/90 backdrop-blur-xl shadow-xl" : "py-6 bg-transparent"
-      )}
-    >
+  className={cn(
+    "fixed top-0 w-full z-[100] transition-all duration-500 px-6",
+    scrolled ? "py-3 bg-gw-forest shadow-xl" : "py-6 bg-white"
+  )}
+>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* LOGO */}
@@ -99,7 +98,7 @@ const Navbar = () => {
                 {link.dropdown && activeDropdown === link.name && (
                   <motion.div
                     initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }}
-                    className="absolute top-full -left-6 w-72 bg-white shadow-2xl rounded-[2.5rem] p-5 border border-slate-50 mt-2"
+                    className="absolute top-full -left-6 w-72 bg-white shadow-2xl rounded-[2.5rem] p-5 border border-slate-50 mt-2 "
                   >
                     {link.dropdown.map((sub) => (
                       <div key={sub.name} className="relative group/nested">

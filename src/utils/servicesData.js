@@ -1,5 +1,4 @@
 export const SERVICES_DATA = {
-  // --- RENEWABLE ENERGY HIERARCHY ---
   "energy": {
     title: "Renewable Energy",
     subtitle: "Strategic Power Portfolio",

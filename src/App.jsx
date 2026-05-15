@@ -1,80 +1,33 @@
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-
-import Navbar from "./components/Navbar";
-
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
-import Services from "./pages/Services"
+import Services from "./pages/Services";
 import ServiceDetail from "./pages/ServiceDetail";
+import AboutUs from "./pages/About";
+import Contact from "./pages/Contact";
+import ProjectWizard from "./components/ProjectWizard";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-    },
-  },
-});
-
-const RootLayout = () => {
+function App() {
   return (
-    <div className="bg-gw-base min-h-screen selection:bg-gw-leaf selection:text-white">
-      <Navbar />
-      <main>
-        <Outlet /> 
-      </main>
-      <Toaster 
-        position="bottom-center"
-        toastOptions={{
-          duration: 5000,
-          style: {
-            background: '#1B3C35',
-            color: '#fff',
-            borderRadius: '20px',
-            padding: '16px 24px',
-          },
-        }}
-      />
-    </div>
-  );
-};
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <RootLayout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "about",
-        element: <About/>, 
-      },
-      {
-        path: "contact",
-        element: <Contact />,
-      },
-    {
-        path: "services",
-        element: <Services />, 
-      },
-      {
-        path: "services/:id",
-        element: <ServiceDetail />,
-      },
-    ],
-  },
-]);
-
-export default function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <Router>
+      <Toaster position="top-right" toastOptions={{ duration: 5000 }} />
+      
+      {/* Layout wraps all routes */}
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:id" element={<ServiceDetail />} />
+          <Route path="/about" element={<AboutUs />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </Layout>
+      
+      {/* Project Wizard - Outside Layout so it doesn't get trapped */}
+      <ProjectWizard />
+    </Router>
   );
 }
+
+export default App;
