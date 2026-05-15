@@ -32,6 +32,28 @@ const Layout = ({ children }) => {
     setIsMobileMenuOpen(false);
   }, [location]);
 
+  // Close dropdown when clicking outside
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    // Check if click target is inside any dropdown menu
+    const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+    let clickedInside = false;
+    
+    dropdownMenus.forEach(menu => {
+      if (menu.contains(event.target)) {
+        clickedInside = true;
+      }
+    });
+    
+    if (!clickedInside && openMenu) {
+      setOpenMenu(null);
+    }
+  };
+  
+  document.addEventListener('click', handleClickOutside);
+  return () => document.removeEventListener('click', handleClickOutside);
+}, [openMenu]);
+
   return (
     <div className="min-h-screen bg-gw-base">
       {/* Navigation Bar */}
@@ -53,9 +75,12 @@ const Layout = ({ children }) => {
 )}>
   GreenWorld<span className="text-gw-leaf">.</span>
 </h1>
-                <p className="text-[10px] font-mono text-white/70 tracking-wider -mt-1">
-                  ENERGY • WATER • CONSULTATION
-                </p>
+                <p className={cn(
+  "text-[10px] font-mono tracking-wider -mt-1 transition-colors",
+  isScrolled ? "text-white/70" : "text-gw-forest/60"
+)}>
+  ENERGY • WATER • CONSULTATION
+</p>
               </div>
             </div>
           </Link>
@@ -79,12 +104,12 @@ const Layout = ({ children }) => {
 
                 <AnimatePresence>
                   {openMenu === key && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-[280px] bg-gw-forest rounded-3xl shadow-2xl border border-white/10 overflow-hidden"
-                    >
+                 <motion.div
+  initial={{ opacity: 0, y: 10 }}
+  animate={{ opacity: 1, y: 0 }}
+  exit={{ opacity: 0, y: 10 }}
+  className="absolute top-full left-0 mt-2 w-[280px] bg-gw-forest rounded-3xl shadow-2xl border border-white/10 overflow-hidden dropdown-menu"
+>
                       <div className="p-4">
                         <ul className="space-y-1">
                           {data.items.map((item) => (
@@ -130,9 +155,9 @@ const Layout = ({ children }) => {
 </Link>
           </div>
 
-          <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden z-10">
-            {isMobileMenuOpen ? <HiX size={24} className={isScrolled ? "text-gw-forest" : "text-white"} /> : <HiMenu size={24} className={isScrolled ? "text-gw-forest" : "text-white"} />}
-          </button>
+         <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="lg:hidden z-10">
+  {isMobileMenuOpen ? <HiX size={24} className="text-yellow-600" /> : <HiMenu size={24} className="text-yellow-600" />}
+</button>
         </div>
 
         <AnimatePresence>
