@@ -198,12 +198,9 @@ const Navbar = () => {
 
         {/* MOBILE TOGGLE BUTTON */}
         <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "lg:hidden text-3xl z-[110] transition-colors",
-            isOpen ? "text-gw-forest" : (scrolled ? "text-white" : "text-gw-forest")
-          )}
-        >
+  onClick={() => setIsOpen(!isOpen)}
+  className="lg:hidden text-3xl z-[110] text-yellow-600"
+>
           {isOpen ? <HiX /> : <HiMenuAlt3 />}
         </button>
       </div>
@@ -211,13 +208,12 @@ const Navbar = () => {
       {/* MOBILE OVERLAY MENU */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ x: "100%" }} 
-            animate={{ x: 0 }} 
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 bg-white z-[100] p-10 pt-32 flex flex-col lg:hidden overflow-y-auto"
-          >
+         <motion.div
+  initial={{ x: "100%" }} 
+  animate={{ x: 0 }} 
+  exit={{ x: "100%" }}
+  className="fixed inset-0 bg-white z-[100] p-10 pt-32 flex flex-col lg:hidden overflow-y-auto"
+>
             <div className="flex flex-col gap-6">
               {NAV_LINKS.map((link) => (
                 <div key={link.name} className="border-b border-slate-50 pb-4">
