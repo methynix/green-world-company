@@ -182,7 +182,7 @@ export const SERVICES_DATA = {
   "reverse-osmosis": {
     title: "Reverse Osmosis (RO) Systems",
     subtitle: "High-Purity Water Production",
-    heroImage: "/waterTreatment.png",
+    heroImage: "/reverseOsmosis.png",
     accent: "bg-gw-sky",
     category: "Water Solutions",
     content: [
@@ -193,7 +193,7 @@ export const SERVICES_DATA = {
   "ultrafiltration": {
     title: "Filtration & Ultrafiltration",
     subtitle: "Membrane Technology",
-    heroImage: "/waterTreatment.png",
+    heroImage: "/ultrafiltration.png",
     accent: "bg-gw-sky",
     category: "Water Solutions",
     content: [
@@ -236,7 +236,7 @@ export const SERVICES_DATA = {
   "borehole-flushing": {
     title: "Water Borehole Flushing",
     subtitle: "Maximize Flow Rate",
-    heroImage: "/boreHole.png",
+    heroImage: "/boreholeflushing.png",
     accent: "bg-gw-sky",
     category: "Water Solutions",
     content: [
