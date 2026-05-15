@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { name: "Home", path: "/" },
   {
     name: "Services",
-    path:  "/services",
+    path: "/services",
     dropdown: [
       {
         name: "Renewable Energy",
@@ -21,7 +21,7 @@ const NAV_LINKS = [
         ],
       },
       { name: "Water Solutions", path: "/services/water" },
-      { name: "EPC Services", path: "/services/epc" }, 
+      { name: "EPC Services", path: "/services/epc" },
     ],
   },
   { name: "About Us", path: "/about" },
@@ -35,24 +35,81 @@ const Navbar = () => {
   const [mobileAccordions, setMobileAccordions] = useState({ services: false, renewable: false });
   const location = useLocation();
 
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu and reset accordions when route changes
   useEffect(() => {
     setIsOpen(false);
     setMobileAccordions({ services: false, renewable: false });
+    setActiveDropdown(null);
   }, [location]);
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if click target is inside any dropdown menu or trigger button
+      const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+      const dropdownTriggers = document.querySelectorAll('.nav-dropdown-trigger');
+      
+      let clickedInside = false;
+      
+      dropdownMenus.forEach(menu => {
+        if (menu.contains(event.target)) {
+          clickedInside = true;
+        }
+      });
+      
+      dropdownTriggers.forEach(trigger => {
+        if (trigger.contains(event.target)) {
+          clickedInside = true;
+        }
+      });
+      
+      if (!clickedInside && activeDropdown) {
+        setActiveDropdown(null);
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [activeDropdown]);
+
+  // Handle ESC key to close dropdown
+  useEffect(() => {
+    const handleEscKey = (event) => {
+      if (event.key === 'Escape' && activeDropdown) {
+        setActiveDropdown(null);
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscKey);
+    return () => document.removeEventListener('keydown', handleEscKey);
+  }, [activeDropdown]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   return (
     <nav
-  className={cn(
-    "fixed top-0 w-full z-[100] transition-all duration-500 px-6",
-    scrolled ? "py-3 bg-gw-forest shadow-xl" : "py-6 bg-white"
-  )}
->
+      className={cn(
+        "fixed top-0 w-full z-[100] transition-all duration-500 px-6",
+        scrolled ? "py-3 bg-gw-forest shadow-xl" : "py-6 bg-white"
+      )}
+    >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         
         {/* LOGO */}
@@ -66,7 +123,7 @@ const Navbar = () => {
           </div>
           <span className={cn(
             "font-bold text-xl tracking-tighter transition-colors",
-            scrolled ? "text-gw-forest" : "text-white"
+            scrolled ? "text-white" : "text-gw-forest"
           )}>
             GREENWORLD
           </span>
@@ -77,7 +134,7 @@ const Navbar = () => {
           {NAV_LINKS.map((link) => (
             <div 
               key={link.name} 
-              className="relative py-2"
+              className="relative py-2 nav-dropdown-trigger"
               onMouseEnter={() => setActiveDropdown(link.name)}
               onMouseLeave={() => setActiveDropdown(null)}
             >
@@ -85,7 +142,7 @@ const Navbar = () => {
                 to={link.path}
                 className={({ isActive }) => cn(
                   "text-sm font-bold tracking-wide transition-all flex items-center gap-1.5",
-                  isActive && link.path !== "#" ? "text-gw-leaf" : (scrolled ? "text-slate-600" : "text-white/90"),
+                  isActive && link.path !== "#" ? "text-gw-leaf" : (scrolled ? "text-white/80" : "text-slate-600"),
                   "hover:text-gw-leaf"
                 )}
               >
@@ -97,8 +154,10 @@ const Navbar = () => {
               <AnimatePresence>
                 {link.dropdown && activeDropdown === link.name && (
                   <motion.div
-                    initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }}
-                    className="absolute top-full -left-6 w-72 bg-white shadow-2xl rounded-[2.5rem] p-5 border border-slate-50 mt-2 "
+                    initial={{ opacity: 0, y: 15 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    exit={{ opacity: 0, y: 15 }}
+                    className="absolute top-full -left-6 w-72 bg-white shadow-2xl rounded-[2.5rem] p-5 border border-slate-50 mt-2 dropdown-menu"
                   >
                     {link.dropdown.map((sub) => (
                       <div key={sub.name} className="relative group/nested">
@@ -137,20 +196,25 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* MOBILE TOGGLE */}
+        {/* MOBILE TOGGLE BUTTON */}
         <button 
           onClick={() => setIsOpen(!isOpen)}
-          className={cn("lg:hidden text-3xl z-[110]", (isOpen || scrolled) ? "text-gw-forest" : "text-white")}
+          className={cn(
+            "lg:hidden text-3xl z-[110] transition-colors",
+            isOpen ? "text-gw-forest" : (scrolled ? "text-white" : "text-gw-forest")
+          )}
         >
           {isOpen ? <HiX /> : <HiMenuAlt3 />}
         </button>
       </div>
 
-      {/* MOBILE OVERLAY */}
+      {/* MOBILE OVERLAY MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+            initial={{ x: "100%" }} 
+            animate={{ x: 0 }} 
+            exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 bg-white z-[100] p-10 pt-32 flex flex-col lg:hidden overflow-y-auto"
           >
@@ -163,12 +227,18 @@ const Navbar = () => {
                         onClick={() => setMobileAccordions(prev => ({ ...prev, services: !prev.services }))}
                         className="text-3xl font-serif text-gw-forest flex items-center justify-between w-full"
                       >
-                        {link.name} <HiChevronDown className={cn("transition-transform", mobileAccordions.services && "rotate-180")} />
+                        {link.name} 
+                        <HiChevronDown className={cn("transition-transform", mobileAccordions.services && "rotate-180")} />
                       </button>
                       
                       <AnimatePresence>
                         {mobileAccordions.services && (
-                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden mt-6 flex flex-col gap-6 pl-4 border-l-2 border-gw-leaf/10">
+                          <motion.div 
+                            initial={{ height: 0, opacity: 0 }} 
+                            animate={{ height: "auto", opacity: 1 }} 
+                            exit={{ height: 0, opacity: 0 }} 
+                            className="overflow-hidden mt-6 flex flex-col gap-6 pl-4 border-l-2 border-gw-leaf/10"
+                          >
                             {link.dropdown.map((sub) => (
                               <div key={sub.name}>
                                 {sub.hasNested ? (
@@ -177,18 +247,39 @@ const Navbar = () => {
                                       onClick={() => setMobileAccordions(prev => ({ ...prev, renewable: !prev.renewable }))}
                                       className="text-xl font-bold text-slate-700 flex items-center justify-between w-full"
                                     >
-                                      {sub.name} <HiChevronDown size={18} />
+                                      {sub.name} 
+                                      <HiChevronDown size={18} className={cn("transition-transform", mobileAccordions.renewable && "rotate-180")} />
                                     </button>
-                                    {mobileAccordions.renewable && (
-                                      <div className="mt-4 flex flex-col gap-4 pl-4">
-                                        {sub.nestedLinks.map(deep => (
-                                          <Link key={deep.name} to={deep.path} className="text-sm font-bold text-gw-leaf uppercase tracking-widest">{deep.name}</Link>
-                                        ))}
-                                      </div>
-                                    )}
+                                    <AnimatePresence>
+                                      {mobileAccordions.renewable && (
+                                        <motion.div 
+                                          initial={{ height: 0, opacity: 0 }} 
+                                          animate={{ height: "auto", opacity: 1 }} 
+                                          exit={{ height: 0, opacity: 0 }}
+                                          className="mt-4 flex flex-col gap-4 pl-4 overflow-hidden"
+                                        >
+                                          {sub.nestedLinks.map(deep => (
+                                            <Link 
+                                              key={deep.name} 
+                                              to={deep.path} 
+                                              className="text-sm font-bold text-gw-leaf uppercase tracking-widest"
+                                              onClick={() => setIsOpen(false)}
+                                            >
+                                              {deep.name}
+                                            </Link>
+                                          ))}
+                                        </motion.div>
+                                      )}
+                                    </AnimatePresence>
                                   </>
                                 ) : (
-                                  <Link to={sub.path} className="text-xl font-bold text-slate-700">{sub.name}</Link>
+                                  <Link 
+                                    to={sub.path} 
+                                    className="text-xl font-bold text-slate-700"
+                                    onClick={() => setIsOpen(false)}
+                                  >
+                                    {sub.name}
+                                  </Link>
                                 )}
                               </div>
                             ))}
@@ -197,21 +288,27 @@ const Navbar = () => {
                       </AnimatePresence>
                     </>
                   ) : (
-                    <Link to={link.path} className="text-4xl font-serif text-gw-forest">{link.name}</Link>
+                    <Link 
+                      to={link.path} 
+                      className="text-4xl font-serif text-gw-forest"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
                   )}
                 </div>
               ))}
             </div>
 
             <div className="mt-auto space-y-6 pt-10">
-                <p className="text-slate-400 text-sm font-medium">contact@greenworldlimited.com</p>
-                <div className="flex gap-4">
-                  <div className="w-10 h-10 rounded-full bg-gw-leaf/10 flex items-center justify-center text-gw-leaf italic font-serif">G</div>
-                  <div className="w-10 h-10 rounded-full bg-gw-sun/10 flex items-center justify-center text-gw-sun italic font-serif">W</div>
-                </div>
-                <Link to="/contact">
-                    <Button className="w-full h-16 text-lg rounded-[2rem]">Get Started</Button>
-                </Link>
+              <p className="text-slate-400 text-sm font-medium">contact@greenworldlimited.com</p>
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-full bg-gw-leaf/10 flex items-center justify-center text-gw-leaf italic font-serif">G</div>
+                <div className="w-10 h-10 rounded-full bg-gw-sun/10 flex items-center justify-center text-gw-sun italic font-serif">W</div>
+              </div>
+              <Link to="/contact" onClick={() => setIsOpen(false)}>
+                <Button className="w-full h-16 text-lg rounded-[2rem]">Get Started</Button>
+              </Link>
             </div>
           </motion.div>
         )}
