@@ -106,7 +106,7 @@ export const SERVICES_DATA = {
   "on-grid-solar": {
     title: "C&I Solar Infrastructure",
     subtitle: "On-Grid, Off-Grid, and Hybrid",
-    heroImage: "/CISolarInfra.jpg",
+    heroImage: "/ciSolarInfra.jpg",
     accent: "bg-gw-leaf",
     category: "Solar Energy Solutions",
     content: [

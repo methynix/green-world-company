@@ -1,9 +1,9 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { HiArrowRight, HiLightningBolt, HiChartBar, HiShieldCheck } from "react-icons/hi";
-import {FaTint} from "react-icons/fa";
-import { GiSolarPower, GiWaterTank, GiDrill } from "react-icons/gi";
+import { HiArrowRight, HiLightningBolt, HiChartBar } from "react-icons/hi";
+import { FaTint } from "react-icons/fa";
+import { GiSolarPower, GiWaterTank } from "react-icons/gi";
 import Button from "../atoms/Button";
 import { Section } from "../atoms/Section";
 import { cn } from "../utils/cn";
@@ -14,7 +14,7 @@ const infoCards = [
     icon: GiSolarPower,
     color: "bg-gw-leaf",
     description: "Commercial & Industrial solar systems from energy audits to full installation and maintenance.",
-    image: "/CISolarInfra.jpg"
+    image: "/ciSolarInfra.jpg"
   },
   {
     title: "Water Solutions",
@@ -25,74 +25,119 @@ const infoCards = [
   }
 ];
 
-const EnergyFlow = () => (
-  <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+// Engineering blueprint grid — fine lines layered over a coarser leaf grid.
+const BlueprintGrid = () => (
+  <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
     <defs>
-      <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#4DAD46" stopOpacity="0.4"/>
-        <stop offset="50%" stopColor="#FBBF24" stopOpacity="0.6"/>
-        <stop offset="100%" stopColor="#4DAD46" stopOpacity="0.4"/>
-      </linearGradient>
+      <pattern id="gw-grid-fine" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M40 0H0V40" fill="none" stroke="#1B3C35" strokeWidth="0.5" strokeOpacity="0.07" />
+      </pattern>
+      <pattern id="gw-grid-major" width="200" height="200" patternUnits="userSpaceOnUse">
+        <path d="M200 0H0V200" fill="none" stroke="#4DAD46" strokeWidth="0.75" strokeOpacity="0.12" />
+      </pattern>
     </defs>
-    <motion.path
-      d="M 10 30 Q 30 20, 50 40 T 90 30"
-      stroke="url(#flowGradient)"
-      strokeWidth="2"
-      fill="none"
-      strokeDasharray="8 8"
-      initial={{ strokeDashoffset: 100 }}
-      animate={{ strokeDashoffset: 0 }}
-      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-    />
-    <motion.path
-      d="M 10 60 Q 40 70, 60 50 T 90 60"
-      stroke="url(#flowGradient)"
-      strokeWidth="1.5"
-      fill="none"
-      strokeDasharray="6 6"
-      initial={{ strokeDashoffset: -100 }}
-      animate={{ strokeDashoffset: 0 }}
-      transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-    />
+    <rect width="100%" height="100%" fill="url(#gw-grid-fine)" />
+    <rect width="100%" height="100%" fill="url(#gw-grid-major)" />
   </svg>
 );
 
+// Ambient flow lines — solar (leaf) → sun → water (sky). Now has a viewBox so it
+// actually spans the hero instead of collapsing into the corner.
+const EnergyFlow = () => {
+  const reduce = useReducedMotion();
+  const anim = (offset, duration) =>
+    reduce
+      ? {}
+      : {
+          initial: { strokeDashoffset: offset },
+          animate: { strokeDashoffset: 0 },
+          transition: { duration, repeat: Infinity, ease: "linear" }
+        };
+
+  return (
+    <svg
+      className="absolute inset-0 w-full h-full pointer-events-none opacity-70"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#4DAD46" stopOpacity="0.55" />
+          <stop offset="50%" stopColor="#FBBF24" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#0096D6" stopOpacity="0.55" />
+        </linearGradient>
+      </defs>
+      <motion.path
+        d="M 0 28 Q 30 18, 52 38 T 100 30"
+        stroke="url(#flowGradient)"
+        strokeWidth="1.5"
+        fill="none"
+        strokeDasharray="3 3"
+        vectorEffect="non-scaling-stroke"
+        {...anim(40, 6)}
+      />
+      <motion.path
+        d="M 0 68 Q 38 78, 60 52 T 100 64"
+        stroke="url(#flowGradient)"
+        strokeWidth="1.5"
+        fill="none"
+        strokeDasharray="2 3"
+        vectorEffect="non-scaling-stroke"
+        {...anim(-40, 8)}
+      />
+    </svg>
+  );
+};
+
 const Home = () => {
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef });
-  const heroY = useTransform(scrollYProgress, [0, 0.3], ["0%", "20%"]);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  // Gentle parallax applied to the oversized blurred glows so no edges are revealed.
+  const glowY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
 
   return (
     <div ref={containerRef} className="bg-gw-base selection:bg-gw-leaf selection:text-white overflow-x-hidden">
-      
+
       {/* HERO SECTION */}
-      <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2760%27 height=%2760%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cdefs%3E%3Cpattern id=%27grid%27 width=%2760%27 height=%2760%27 patternUnits=%27userSpaceOnUse%27%3E%3Cpath d=%27M60_0_L0_0_0_60%27 fill=%27none%27 stroke=%27%234DAD46%27 stroke-width=%270.5%27 stroke-opacity=%270.1%27/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=%27100%25%27 height=%27100%25%27 fill=%27url(%23grid)%27/%3E%3C/svg%3E')] bg-repeat" />
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <BlueprintGrid />
+          <motion.div style={{ y: glowY }} className="absolute inset-0">
+            <div className="absolute -top-40 -right-40 w-[38rem] h-[38rem] rounded-full bg-gw-sun/20 blur-[120px]" />
+            <div className="absolute -bottom-48 -left-40 w-[36rem] h-[36rem] rounded-full bg-gw-sky/15 blur-[120px]" />
+            <div className="absolute top-1/3 left-1/4 w-[30rem] h-[30rem] rounded-full bg-gw-leaf/10 blur-[120px]" />
+          </motion.div>
+          <EnergyFlow />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 py-32">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-32">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
             {/* Left Side - Hero Text */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              <span className="text-gw-leaf font-mono text-xs tracking-[0.3em] uppercase bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full inline-block mb-6">
-                SOLAR • WATER • CONSULTATION
+              <span className="inline-flex items-center gap-2 text-gw-leaf font-mono text-[0.7rem] tracking-[0.3em] uppercase bg-white border border-gw-leaf/20 shadow-sm px-4 py-2 rounded-full mb-7">
+                <span className="w-1.5 h-1.5 rounded-full bg-gw-leaf" />
+                Solar • Water • Consultation
               </span>
-              <h1 className="text-5xl md:text-7xl font-serif text-gw-forest leading-[1.1] mb-6">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif text-gw-forest leading-[1.05] tracking-tight mb-6">
                 Solar Energy Systems
                 <br />
                 <span className="text-gw-leaf italic">+ Water Solutions</span>
               </h1>
-              <p className="text-slate-500 text-lg max-w-md mb-8 leading-relaxed">
-                Commercial & Industrial solar energy solutions, plus water treatment systems  delivered with technical precision.
+              <p className="text-slate-500 text-lg max-w-md mb-9 leading-relaxed">
+                Commercial &amp; Industrial solar energy solutions, plus water treatment systems  delivered with technical precision.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/contact">
-                  <Button className="h-14 px-8 text-base bg-gw-leaf hover:bg-gw-forest">
+                  <Button className="h-14 px-8 text-base bg-gw-leaf hover:bg-gw-forest shadow-lg shadow-gw-leaf/20">
                     Speak to an Engineer <HiArrowRight />
                   </Button>
                 </Link>
@@ -104,24 +149,35 @@ const Home = () => {
               </div>
             </motion.div>
 
-            {/* Right Side - Info Cards (No fake specs) */}
+            {/* Right Side - Info Cards */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
               className="space-y-6"
             >
               {infoCards.map((card, idx) => (
-                <motion.div key={idx} whileHover={{ y: -5 }} className="group relative overflow-hidden rounded-3xl bg-white shadow-xl">
-                  <div className="absolute inset-0">
-                    <img src={card.image} className="w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity" />
-                  </div>
-                  <div className="relative p-6">
-                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mb-4", card.color)}>
-                      <card.icon size={24} className="text-white" />
+                <motion.div
+                  key={idx}
+                  whileHover={{ y: -6 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                  className="group relative overflow-hidden rounded-3xl bg-white shadow-xl ring-1 ring-slate-900/5"
+                >
+                  {/* Image band — actually visible now */}
+                  <div className="relative h-32 overflow-hidden">
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent" />
+                    <div className={cn("absolute -bottom-5 left-6 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ring-4 ring-white", card.color)}>
+                      <card.icon size={22} className="text-white" />
                     </div>
+                  </div>
+                  <div className="pt-8 px-6 pb-6">
                     <h3 className="text-xl font-bold text-gw-forest mb-2">{card.title}</h3>
-                    <p className="text-slate-500 text-sm">{card.description}</p>
+                    <p className="text-slate-500 text-sm leading-relaxed">{card.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -129,9 +185,8 @@ const Home = () => {
           </div>
         </div>
 
-        <EnergyFlow />
-        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-gw-base to-transparent" />
-      </div>
+        <div className="absolute bottom-0 w-full h-32 bg-gradient-to-t from-gw-base to-transparent z-[2]" />
+      </section>
 
       {/* TECHNICAL PILLARS SECTION */}
       <Section className="py-24">
@@ -209,8 +264,8 @@ const Home = () => {
             </div>
             <div className="relative">
               <div className="absolute -inset-4 bg-gw-leaf/20 rounded-[3rem] blur-2xl" />
-              <img 
-                src="https://res.cloudinary.com/dwt1u991q/image/upload/v1776160057/renewableEnergy_hzw4gx.jpg"
+              <img
+                src="solarDesilanation.jpg"
                 className="relative rounded-3xl shadow-2xl w-full"
                 alt="Solar Water Integration"
               />
