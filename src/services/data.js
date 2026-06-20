@@ -51,12 +51,12 @@ export const serviceCategories = [
     color: "bg-gw-leaf",
     icon: GiSolarPower,
     services: [
-      { name: "Energy Audits", path: "/services/energy-audits", description: "The Diagnostic Foundation We analyze your facility's current energy consumption patterns, identifying peaks, waste, and inefficiencies." },
-      { name: "C&I Solar Infrastructure", path: "/services/on-grid-solar", description: "On-Grid, Off-Grid, and Hybrid systems  Design, Supply, Installation, and Commissioning." },
-      { name: "Solar System Maintenance", path: "/services/solar-maintenance", description: "Lifecycle Assurance Systematic cleaning, electrical health checks, and performance monitoring." },
-      { name: "Solar Desalination Systems", path: "/services/solar-desalination", description: "Solar-powered Reverse Osmosis and filtration units for brackish or saline water." },
-      { name: "Solar Pumping Systems", path: "/services/solar-pumping", description: "High-efficiency solar pumping arrays for agricultural irrigation and water distribution." },
-      { name: "Solar Cooking Systems", path: "/services/solar-cooking", description: "Large-scale solar thermal cooking for schools, hospitals, and factory canteens." }
+      { name: "Energy Audits", path: "/services/energy-audits", image: "/energyAudits.jpg", description: "The Diagnostic Foundation We analyze your facility's current energy consumption patterns, identifying peaks, waste, and inefficiencies." },
+      { name: "C&I Solar Infrastructure", path: "/services/on-grid-solar", image: "/ciSolarInfra.jpg", description: "On-Grid, Off-Grid, and Hybrid systems  Design, Supply, Installation, and Commissioning." },
+      { name: "Solar System Maintenance", path: "/services/solar-maintenance", image: "/solarSystemMaintenance.jpg", description: "Lifecycle Assurance Systematic cleaning, electrical health checks, and performance monitoring." },
+      { name: "Solar Desalination Systems", path: "/services/solar-desalination", image: "/solarDesilanation.jpg", description: "Solar-powered Reverse Osmosis and filtration units for brackish or saline water." },
+      { name: "Solar Pumping Systems", path: "/services/solar-pumping", image: "/solarPumping.jpg", description: "High-efficiency solar pumping arrays for agricultural irrigation and water distribution." },
+      { name: "Solar Cooking Systems", path: "/services/solar-cooking", image: "/solarCooking.jpg", description: "Large-scale solar thermal cooking for schools, hospitals, and factory canteens." }
     ]
   },
   {
@@ -66,14 +66,14 @@ export const serviceCategories = [
     color: "bg-gw-sky",
     icon: GiWaterTank,
     services: [
-      { name: "Water Treatment Systems", path: "/services/water-treatment", description: "Advanced treatment technologies for raw water into high-spec process water or potable supply." },
-      { name: "Reverse Osmosis (RO)", path: "/services/reverse-osmosis", description: "High-capacity RO units to remove salts, minerals, and contaminants." },
-      { name: "Filtration & Ultrafiltration", path: "/services/ultrafiltration", description: "Multi-media filters and advanced membrane ultrafiltration for suspended solids." },
-      { name: "Wastewater Treatment", path: "/services/wastewater-treatment", description: "Treat and recycle process water, turning waste into a reusable resource." },
-      { name: "Geophysical Surveys", path: "/services/borehole-services", description: "Scientific mapping to identify high-yield aquifers before drilling begins." },
-      { name: "Water Borehole Drilling", path: "/services/borehole-drilling", description: "Heavy-duty industrial rigs drilling to precise depths with proper casing." },
-      { name: "Borehole Flushing", path: "/services/borehole-flushing", description: "High-pressure flushing to clear silt and maximize water flow rate." },
-      { name: "Pumping Solutions", path: "/services/pumping-solutions", description: "Sizing, supply, and installation of submersible and surface pumps." }
+      { name: "Water Treatment Systems", path: "/services/water-treatment", image: "/waterTreatment.png", description: "Advanced treatment technologies for raw water into high-spec process water or potable supply." },
+      { name: "Reverse Osmosis (RO)", path: "/services/reverse-osmosis", image: "/reverseOsmosis.png", description: "High-capacity RO units to remove salts, minerals, and contaminants." },
+      { name: "Filtration & Ultrafiltration", path: "/services/ultrafiltration", image: "/ultrafiltration.png", description: "Multi-media filters and advanced membrane ultrafiltration for suspended solids." },
+      { name: "Wastewater Treatment", path: "/services/wastewater-treatment", image: "/waterTreatment.png", description: "Treat and recycle process water, turning waste into a reusable resource." },
+      { name: "Geophysical Surveys", path: "/services/borehole-services", image: "/geophysicalSurveys.png", description: "Scientific mapping to identify high-yield aquifers before drilling begins." },
+      { name: "Water Borehole Drilling", path: "/services/borehole-drilling", image: "/boreHole.png", description: "Heavy-duty industrial rigs drilling to precise depths with proper casing." },
+      { name: "Borehole Flushing", path: "/services/borehole-flushing", image: "/boreholeflushing.png", description: "High-pressure flushing to clear silt and maximize water flow rate." },
+      { name: "Pumping Solutions", path: "/services/pumping-solutions", image: "/waterPumping.png", description: "Sizing, supply, and installation of submersible and surface pumps." }
     ]
   },
   {
@@ -83,9 +83,9 @@ export const serviceCategories = [
     color: "bg-gw-sun",
     icon: HiBriefcase,
     services: [
-      { name: "Wind Energy Feasibility", path: "/services/wind-assessment", description: "Micro-siting analysis, wind resource assessment, and turbine technology selection." },
-      { name: "Geothermal Exploration Advisory", path: "/services/geothermal", description: "Technical advisory on geothermal surface exploration and heat-gradient mapping." },
-      { name: "Nuclear Peaceful Transition Advisory", path: "/services/nuclear-consulting", description: "Strategic advisory on regulatory frameworks, safety protocols, and technical infrastructure." }
+      { name: "Wind Energy Feasibility", path: "/services/wind-assessment", image: "/windEnergyFeasibility.png", description: "Micro-siting analysis, wind resource assessment, and turbine technology selection." },
+      { name: "Geothermal Exploration Advisory", path: "/services/geothermal", image: "/geothermalNuclear.png", description: "Technical advisory on geothermal surface exploration and heat-gradient mapping." },
+      { name: "Nuclear Peaceful Transition Advisory", path: "/services/nuclear-consulting", image: "/geothermalNuclear.png", description: "Strategic advisory on regulatory frameworks, safety protocols, and technical infrastructure." }
     ]
   }
 ]
