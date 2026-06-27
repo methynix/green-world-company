@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import {  AnimatePresence } from "framer-motion";
 import { 
   HiMenu, HiX, HiChevronDown, HiSun, 
    HiBriefcase, HiChartBar,
@@ -65,8 +65,8 @@ useEffect(() => {
           {/* Logo */}
           <Link to="/" className="relative z-10 group">
             <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gw-leaf rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">G</span>
+              <div className="w-10 h-10 bg-gw-leaf rounded-full flex items-center justify-center">
+                <img src='logo.png' alt='logo' className="h-full w-full rounded-full"/>
               </div>
               <div>
                 <h1 className={cn(
